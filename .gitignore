@@ -1,0 +1,12 @@
+# Ignore environment
+.env
+
+# Ignore Airflow logs and other generated folders
+airflow/logs/
+airflow/__pycache__/
+__pycache__/
+
+# Ignore temporary files
+*.pyc
+*.pyo
+*.DS_Store
