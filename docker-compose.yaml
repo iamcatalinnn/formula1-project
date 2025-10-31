@@ -333,5 +333,25 @@ services:
       airflow-init:
         condition: service_completed_successfully
 
+  f1-postgres:
+    image: postgres:16
+    container_name: f1-postgres
+    environment:
+      POSTGRES_USER: ${F1_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${F1_POSTGRES_PASSWORD}
+      POSTGRES_DB: ${F1_POSTGRES_DB}
+    ports:
+      - "${F1_POSTGRES_PORT}:5432"
+    volumes:
+      - f1-postgres-data:/var/lib/postgresql/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${F1_POSTGRES_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
+
 volumes:
   postgres-db-volume:
+  f1-postgres-data:
