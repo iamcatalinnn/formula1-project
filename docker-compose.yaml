@@ -352,8 +352,33 @@ services:
       interval: 10s
       retries: 5
       start_period: 5s
+    networks:
+      - airflow  
+
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.7.0
+    container_name: dbt
+    working_dir: /usr/app
+    environment:
+      F1_POSTGRES_USER: ${F1_POSTGRES_USER}
+      F1_POSTGRES_PASSWORD: ${F1_POSTGRES_PASSWORD}
+      F1_POSTGRES_DB: ${F1_POSTGRES_DB}
+    volumes:
+      - ./dbt/f1:/usr/app              
+      - ./dbt/profiles:/root/.dbt      
+    depends_on:
+      f1-postgres:
+        condition: service_healthy 
+        
+    networks:
+      - airflow
+    entrypoint: /bin/bash                          
+    command: -c "tail -f /dev/null"  # Keep the container running for interactive use                
 
 
 volumes:
   postgres-db-volume:
   f1-postgres-data:
+
+networks:
+  airflow:

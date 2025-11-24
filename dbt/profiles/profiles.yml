@@ -1,0 +1,42 @@
+f1_project_profile: 
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: f1-postgres 
+      port: 5432
+      # Use environment variables for sensitive credentials (read from your .env file)
+      user: "{{ env_var('F1_POSTGRES_USER') }}"
+      pass: "{{ env_var('F1_POSTGRES_PASSWORD') }}"
+      dbname: "{{ env_var('F1_POSTGRES_DB') }}"
+      schema: public # The default schema dbt will use to operate (dbt will create the 'reporting' schema from dbt_project.yml inside this database).
+      threads: 4
+      
+      # Optional settings for connection pooling/timeouts
+      keepalives_idle: 0 
+      connect_timeout: 10
+      search_path: public # Allows you to reference objects in 'public' without schema prefix
+temp_f1:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: [1 or more]
+      host: [host]
+      port: [port]
+      user: [dev_username]
+      pass: [dev_password]
+      dbname: [dbname]
+      schema: [dev_schema]
+
+    prod:
+      type: postgres
+      threads: [1 or more]
+      host: [host]
+      port: [port]
+      user: [prod_username]
+      pass: [prod_password]
+      dbname: [dbname]
+      schema: [prod_schema]
+
+  target: dev

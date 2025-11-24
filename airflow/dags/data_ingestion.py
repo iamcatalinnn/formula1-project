@@ -38,7 +38,7 @@ def F1DynamicCSVIngest():
         """Create table dynamically and load CSV data"""
         file_path = os.path.join(RAW_FOLDER, csv_file)
         table_name = os.path.splitext(csv_file)[0].lower()  # removing the .csv extension
-        full_table_name = f"bronze.{table_name}"
+        full_table_name = f"raw.{table_name}"
 
         #Read CSV headers dynamically
         df = pd.read_csv(file_path, nrows=0)
@@ -46,7 +46,7 @@ def F1DynamicCSVIngest():
 
         #Generate CREATE TABLE SQL
         create_table_sql = f"""
-        CREATE SCHEMA IF NOT EXISTS bronze;
+        CREATE SCHEMA IF NOT EXISTS raw;
         CREATE TABLE IF NOT EXISTS {full_table_name} (
             {columns_sql}
         );
